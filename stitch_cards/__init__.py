@@ -1,0 +1,1 @@
+"""Stitch Cards service plugin."""

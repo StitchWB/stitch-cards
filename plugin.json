@@ -1,0 +1,67 @@
+{
+  "schema": "stitch.plugin/v2",
+  "id": "stitch-cards",
+  "name": "Stitch Cards",
+  "version": "0.1.0",
+  "service": "cards",
+  "kind": "service",
+  "engine": {
+    "min": "0.3.0",
+    "api": 2
+  },
+  "depends": [],
+  "entry": {
+    "module": "stitch_cards"
+  },
+  "capabilities": [],
+  "outputs": [],
+  "signature": "",
+  "contributions": {
+    "commands": [
+      {
+        "name": "generate_cards",
+        "readonly": true
+      },
+      {
+        "name": "check_card_rust",
+        "readonly": true
+      },
+      {
+        "name": "find_live_card",
+        "readonly": false
+      }
+    ],
+    "ui": {
+      "kind": "core_page",
+      "tabs": [
+        {
+          "id": "cards",
+          "label": "stitch-cards.tab",
+          "icon": "CreditCard",
+          "page": "main"
+        }
+      ]
+    },
+    "i18n": {
+      "ru": {
+        "stitch-cards": {
+          "title": "Инструменты карт",
+          "tab": "Карты"
+        }
+      },
+      "en": {
+        "stitch-cards": {
+          "title": "Card Tools",
+          "tab": "Cards"
+        }
+      }
+    },
+    "storage": {
+      "sqlite": false
+    }
+  },
+  "generated_by": {
+    "tool": "stitch_plugin_tools",
+    "scaffold": 3
+  }
+}
