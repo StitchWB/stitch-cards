@@ -118,11 +118,13 @@ def generate_cards(
 # ── Card check ────────────────────────────────────────────────────────────────
 
 
-def check_card(card_data: str) -> dict[str, Any]:
+def check_card(card_data: str, proxy: str | None = None) -> dict[str, Any]:
     """Check a card via BIN lookup API.
 
     *card_data* format: ``number|month|year|cvv`` or just ``number``.
-    Returns a ``CardCheckResult``-shaped dict.
+    Returns a ``CardCheckResult``-shaped dict.  *proxy* (optional) is the
+    core outbound proxy injected by the dual router — the plugin process
+    cannot read core settings itself.
     """
     parts = card_data.split("|")
     number = parts[0].strip() if parts else card_data.strip()
@@ -139,12 +141,23 @@ def check_card(card_data: str) -> dict[str, Any]:
     }
 
     try:
-        client = _get_http_client()
-        resp = client.get(
-            _BIN_CHECK_URL,
-            params={"bin": bin_prefix},
-            headers=headers,
-        )
+        if proxy:
+            # Per-call client: the singleton is proxy-less.
+            import httpx
+
+            with httpx.Client(timeout=_HTTP_TIMEOUT, proxy=proxy) as client:
+                resp = client.get(
+                    _BIN_CHECK_URL,
+                    params={"bin": bin_prefix},
+                    headers=headers,
+                )
+        else:
+            client = _get_http_client()
+            resp = client.get(
+                _BIN_CHECK_URL,
+                params={"bin": bin_prefix},
+                headers=headers,
+            )
         if resp.status_code >= 400:
             return _error_result(f"BIN API returned {resp.status_code}")
         data = resp.json()
@@ -181,17 +194,18 @@ def find_live_card(
     max_attempts: int = 50,
     month: str | None = None,
     year: str | None = None,
+    proxy: str | None = None,
 ) -> dict[str, Any] | None:
     """Generate and check cards until a 'live' one is found or max_attempts.
 
     Capped at 200 attempts internally so a runaway loop cannot outlive the
-    host call timeout — the host will fall back to the built-in on timeout.
+    host call timeout.
     """
     max_attempts = max(1, min(max_attempts, 200))
     for _ in range(max_attempts):
         cards = generate_cards(bin_str, 1, month, year)
         card = cards[0]
-        result = check_card(card["format"])
+        result = check_card(card["format"], proxy=proxy)
         if result.get("success") and result.get("status") == "Live":
             return card
     return None

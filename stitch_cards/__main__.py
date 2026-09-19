@@ -84,7 +84,7 @@ def _handle_generate_cards(params: dict[str, Any]) -> dict[str, Any] | list[dict
 def _handle_check_card_rust(params: dict[str, Any]) -> dict[str, Any]:
     """Check a card via BIN lookup API (mirrors check_card_rust)."""
     card_data = params.get("cardData", params.get("card_data", ""))
-    return service.check_card(card_data)
+    return service.check_card(card_data, proxy=params.get("proxy"))
 
 
 def _handle_find_live_card(params: dict[str, Any]) -> dict[str, Any] | None:
@@ -94,7 +94,9 @@ def _handle_find_live_card(params: dict[str, Any]) -> dict[str, Any] | None:
     month = params.get("month")
     year = params.get("year")
     try:
-        return service.find_live_card(bin_str, max_attempts, month, year)
+        return service.find_live_card(
+            bin_str, max_attempts, month, year, proxy=params.get("proxy")
+        )
     except ValueError as exc:
         return {"success": False, "error": str(exc)}
 
