@@ -182,7 +182,6 @@ def check_card(card_data: str, proxy: str | None = None) -> dict[str, Any]:
         "countryName": country.get("name", ""),
         "countryCode": country.get("code", ""),
         "countryEmoji": country.get("emoji", ""),
-        "error": None,
     }
 
 
