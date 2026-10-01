@@ -63,5 +63,59 @@
   "generated_by": {
     "tool": "stitch_plugin_tools",
     "scaffold": 3
-  }
+  },
+  "description": {
+    "ru": "Карточные инструменты для регистрации: генерация карт с валидной контрольной цифрой Луна по BIN, проверка через BIN-lookup API и поиск живой карты. Добавляет вкладку «Карты».",
+    "en": "Card tools for registration workflows: generate cards with valid Luhn check digits from a BIN, check them via a BIN lookup API, and search for a live card. Adds a Cards tab."
+  },
+  "author": "WhiteBite",
+  "category": "productivity",
+  "status": "beta",
+  "icon": "🃏",
+  "features": [
+    {
+      "title": {
+        "ru": "Генерация карт по BIN с контрольной цифрой Луна и сроком действия",
+        "en": "Card generation from BIN with Luhn check digit and expiry"
+      },
+      "status": "stable"
+    },
+    {
+      "title": {
+        "ru": "Проверка карты через BIN-lookup API (bincheck.io), с прокси",
+        "en": "Card check via BIN lookup API (bincheck.io), with proxy support"
+      },
+      "status": "stable"
+    },
+    {
+      "title": {
+        "ru": "Поиск живой карты: генерация и проверка до первой валидной",
+        "en": "Live card search: generate and check until a live one is found"
+      },
+      "status": "stable"
+    },
+    {
+      "title": {
+        "ru": "Вкладка «Карты» на главной странице",
+        "en": "Cards tab on the main page"
+      },
+      "status": "stable"
+    }
+  ],
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-08-23",
+      "changes": [
+        {
+          "ru": "Генерация карт по Луну и BIN-проверка",
+          "en": "Luhn card generation and BIN check"
+        },
+        {
+          "ru": "Команда find_live_card с лимитом попыток",
+          "en": "find_live_card command with attempt limit"
+        }
+      ]
+    }
+  ]
 }
