@@ -87,20 +87,6 @@ def _handle_check_card_rust(params: dict[str, Any]) -> dict[str, Any]:
     return service.check_card(card_data, proxy=params.get("proxy"))
 
 
-def _handle_find_live_card(params: dict[str, Any]) -> dict[str, Any] | None:
-    """Generate and check cards until a live one is found (mirrors find_live_card)."""
-    bin_str = params.get("bin", "")
-    max_attempts = int(params.get("maxAttempts", params.get("max_attempts", 50)))
-    month = params.get("month")
-    year = params.get("year")
-    try:
-        return service.find_live_card(
-            bin_str, max_attempts, month, year, proxy=params.get("proxy")
-        )
-    except ValueError as exc:
-        return {"success": False, "error": str(exc)}
-
-
 # ── Server entry point ────────────────────────────────────────────────────
 
 
@@ -111,7 +97,6 @@ def main() -> None:
     server.register("_migrate_db", _handle_migrate_db)
     server.register("generate_cards", _handle_generate_cards)
     server.register("check_card_rust", _handle_check_card_rust)
-    server.register("find_live_card", _handle_find_live_card)
     server.serve()
 
 

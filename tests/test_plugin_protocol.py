@@ -93,3 +93,32 @@ def test_lifecycle_init_migrate_ping_command_shutdown() -> None:
     )
 
     assert responses[5]["result"] is None
+
+
+def test_removed_find_live_card_is_unregistered() -> None:
+    """Given the shipped plugin, when find_live_card is called, then the
+    server answers with a JSON-RPC error instead of serving the loop."""
+    with tempfile.TemporaryDirectory() as td:
+        responses = _drive(
+            [
+                _request(
+                    1,
+                    "plugin.init",
+                    {
+                        "engine_api": 2,
+                        "plugin_id": PLUGIN_ID,
+                        "db_path": str(Path(td) / "plugin.db"),
+                        "data_dir": td,
+                        "supported": [],
+                    },
+                ),
+                _request(
+                    2,
+                    "plugin.call",
+                    {"name": "find_live_card", "params": {"bin": "411111"}},
+                ),
+                _request(3, "plugin.shutdown"),
+            ]
+        )
+
+    assert "error" in responses[2], responses[2]

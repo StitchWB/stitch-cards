@@ -2,7 +2,7 @@
   "schema": "stitch.plugin/v2",
   "id": "stitch-cards",
   "name": "Stitch Cards",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "service": "cards",
   "kind": "service",
   "engine": {
@@ -25,10 +25,6 @@
       {
         "name": "check_card_rust",
         "readonly": true
-      },
-      {
-        "name": "find_live_card",
-        "readonly": false
       }
     ],
     "ui": {
@@ -65,8 +61,8 @@
     "scaffold": 3
   },
   "description": {
-    "ru": "Карточные инструменты для регистрации: генерация карт с валидной контрольной цифрой Луна по BIN, проверка через BIN-lookup API и поиск живой карты. Добавляет вкладку «Карты».",
-    "en": "Card tools for registration workflows: generate cards with valid Luhn check digits from a BIN, check them via a BIN lookup API, and search for a live card. Adds a Cards tab."
+    "ru": "Карточные инструменты для регистрации: генерация карт с валидной контрольной цифрой Луна по BIN и проверка через BIN-lookup API. Добавляет вкладку «Карты».",
+    "en": "Card tools for registration workflows: generate cards with valid Luhn check digits from a BIN and check them via a BIN lookup API. Adds a Cards tab."
   },
   "author": "WhiteBite",
   "category": "productivity",
@@ -89,20 +85,27 @@
     },
     {
       "title": {
-        "ru": "Поиск живой карты: генерация и проверка до первой валидной",
-        "en": "Live card search: generate and check until a live one is found"
-      },
-      "status": "stable"
-    },
-    {
-      "title": {
-        "ru": "Вкладка «Карты» на главной странице",
-        "en": "Cards tab on the main page"
+        "ru": "Вкладка «Карты» ведёт на страницу инструментов",
+        "en": "Cards tab leads to the Tools page"
       },
       "status": "stable"
     }
   ],
   "changelog": [
+    {
+      "version": "0.1.1",
+      "date": "2026-10-09",
+      "changes": [
+        {
+          "ru": "Команда find_live_card удалена: BIN-lookup не доказывает живость карты",
+          "en": "find_live_card removed: BIN lookup cannot prove card liveness"
+        },
+        {
+          "ru": "Вкладка «Карты» маршрутизируется на страницу инструментов",
+          "en": "Cards tab routes to the Tools page"
+        }
+      ]
+    },
     {
       "version": "0.1.0",
       "date": "2026-08-23",

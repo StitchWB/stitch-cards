@@ -1,4 +1,4 @@
-"""Card tools service — generation (Luhn), BIN check, find-live-card.
+"""Card tools service — generation (Luhn) and BIN check.
 
 Ported from ``stitch_backend.domains.cards.service`` so the plugin can
 serve the 3 card commands when installed and healthy.  The original
@@ -185,32 +185,7 @@ def check_card(card_data: str, proxy: str | None = None) -> dict[str, Any]:
     }
 
 
-# ── Find live card ────────────────────────────────────────────────────────────
-
-
-def find_live_card(
-    bin_str: str,
-    max_attempts: int = 50,
-    month: str | None = None,
-    year: str | None = None,
-    proxy: str | None = None,
-) -> dict[str, Any] | None:
-    """Generate and check cards until a 'live' one is found or max_attempts.
-
-    Capped at 200 attempts internally so a runaway loop cannot outlive the
-    host call timeout.
-    """
-    max_attempts = max(1, min(max_attempts, 200))
-    for _ in range(max_attempts):
-        cards = generate_cards(bin_str, 1, month, year)
-        card = cards[0]
-        result = check_card(card["format"], proxy=proxy)
-        if result.get("success") and result.get("status") == "Live":
-            return card
-    return None
-
-
-# ── Internal ──────────────────────────────────────────────────────────────────
+# ── Internal ─────────────────────────────────────────────────────────────────
 
 
 def _error_result(message: str) -> dict[str, Any]:
